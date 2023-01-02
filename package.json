@@ -1,0 +1,20 @@
+{
+  "name": "four-card-game",
+  "version": "1.0.0",
+  "description": "A card game like [Rat-a-Tat Cat](https://en.wikipedia.org/wiki/Rat-a-Tat_Cat) but with slightly modified rules for copyright reasons.",
+  "main": "./out/game.js",
+  "scripts": {
+    "start": "tsc && node ./out/game.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garrrettt/four-card-game.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/garrrettt/four-card-game/issues"
+  },
+  "homepage": "https://github.com/garrrettt/four-card-game#readme"
+}

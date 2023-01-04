@@ -258,5 +258,6 @@ const game = new Game();
 game.play();
 
 // TODOS
-// 1) Currently there is no concept of a discard pile... game auto-draws for you
-// 2) Action cards need to be implemented
+// - Action cards need to be implemented
+//   - Each players actions need to be announced (i.e. I picked from the discard) for the sake of
+//     swapping

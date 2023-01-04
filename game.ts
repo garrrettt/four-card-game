@@ -89,6 +89,13 @@ class Game {
   cycleNextPlayer(): void {
     this.currPlayerIdx = (this.currPlayerIdx + 1) % PLAYER_COUNT;
   }
+
+  findPlayer(name: string): Player | null {
+    for (let player of this.players) {
+      if (player.name == name) return player;
+    }
+    return null;
+  }
 }
 
 class Player {
@@ -106,7 +113,7 @@ class Player {
     // player draws from either deck or discard
     console.log(`Your hand is... ${this.hand.toString()}`);
     console.log(`Discard is: ${discard[discard.length - 1].value}`);
-    let choice = ask("Draw from d(i)scard or d(e)ck?");
+    let choice = ask("Draw from d(i)scard or d(e)ck? ");
     let card: Card;
     if (choice == "i") {
       // we know .pop() will not be undefined because the discard is never empty. The discard always
@@ -118,10 +125,11 @@ class Player {
     } else {
       throw new Error('Command not recognized.');
     }
-    console.log(`Card drawn is... ${card.value}`);
 
     // player decides what to do with card (depends on type of card)
     if (card.suit == CardSuit.NUMBER) {
+      console.log(`Card drawn is... ${card.value}`);
+
       // player gets option to swap card with one in their hand or discard
       let answer = ask("(S)wap or (D)iscard? ");
       if (answer == "S") {
@@ -134,8 +142,26 @@ class Player {
       } else {
         console.error(`Unknown option: '${answer}'`);
       }
-    } else {
-      console.error("Action cards not implemented.");
+    } else if (card.suit == CardSuit.PEEK) {
+      console.log(`Card drawn is... PEEK`);
+      let choice = ask("Which card do you want to peek at? (0-3) ");
+      let cardIdx = parseInt(choice);
+      let card = this.hand.cards[cardIdx];
+      console.log(`The card is: ${card.value}`);
+    } else if (card.suit == CardSuit.SWAP) {
+      console.log(`Card drawn is... SWAP`);
+      let name = ask("Name a player you'd like to swap with: ");
+      let myCardIdx = parseInt(ask("Which of your cards would you like to swap (0-3): "));
+      let myCard = this.hand.cards[myCardIdx];
+      let theirCardIdx = parseInt(ask("Which of their cards would you like to swap with (0-3): "));
+      let player = game.findPlayer(name);
+      if (player == null) {
+        console.error("Couldn't find player!");
+        return;
+      }
+      let theirCard = player.hand.swap(theirCardIdx, myCard);
+      this.hand.swap(myCardIdx, theirCard);
+      console.log("Swapped!");
     }
     game.displayEndTurnOptions();
   }
@@ -258,6 +284,5 @@ const game = new Game();
 game.play();
 
 // TODOS
-// - Action cards need to be implemented
 //   - Each players actions need to be announced (i.e. I picked from the discard) for the sake of
 //     swapping
